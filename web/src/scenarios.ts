@@ -80,6 +80,17 @@ export const scenarios: Scenario[] = [
       "Checks out an out-of-range cart line → index-out-of-range panic → HTTP 500 with a stack trace on the span.",
   },
   {
+    id: "report",
+    title: "Sales report",
+    framing: "Generate the daily sales summary.",
+    method: "GET",
+    endpoint: "/report?n=200",
+    signals: ["slow"],
+    isIssue: true,
+    howToTrigger:
+      "Builds a 200-row report with a per-item blocking call (~600ms). The fix removes the per-item I/O so it returns in <100ms.",
+  },
+  {
     id: "pay",
     title: "Pay now",
     framing: "Charge the payment method.",

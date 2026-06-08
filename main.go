@@ -66,6 +66,12 @@ func main() {
 	mux.HandleFunc("GET /api/cpu", cpuHandler)
 	mux.HandleFunc("GET /api/mem", memHandler)
 
+	// Build self-check: reports whether the running binary still has the seeded bugs or
+	// has been patched (see status.go). The storefront shows this as a buggy/patched
+	// banner so a tester can tell a patch is actually live. Keep this line stable — the
+	// agent overwrites main.go on patch, so it's re-emitted from the file it reads.
+	mux.HandleFunc("GET /api/status", statusHandler)
+
 	// Serve the built storefront SPA at "/" (registered last). Degrades gracefully when
 	// the frontend isn't built so the API stays usable headless (e.g. for the pipeline).
 	mux.Handle("/", storefrontHandler())
